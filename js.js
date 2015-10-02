@@ -2,6 +2,10 @@ window.onload = function()
 {
     var canvas = document.getElementById('field');
     var game = new Game(canvas);
+    var btn = document.getElementById('nextgen');
+    btn.onclick = function(){
+        game.nextGen();
+    };
     game.start();
 };
 
@@ -12,8 +16,8 @@ function Point(x, y) {
 function Game(canvas)
 {
     var cellSize = 10;
-    var gridSizeX = 30;
-    var gridSizeY = 30;
+    var gridSizeX = 5;
+    var gridSizeY = 5;
     var grid = [];
 
     canvas.width = gridSizeX * cellSize;
@@ -24,8 +28,43 @@ function Game(canvas)
     {
         generateGrid();
         drawGrid();
-        getNeighbors(new Point(30,30));
+        nextGeneration();
+        /*setInterval(nextGeneration, 300);*/
     };
+
+    this.nextGen = function(){
+        nextGeneration();
+    };
+
+    function nextGeneration() {
+        var nextGeneration = [];
+        for(var i = 0; i < grid.length; i++) {
+            nextGeneration[i] = [];
+            for(var j = 0; j < grid[i].length; j++) {
+                nextGeneration[i][j] = isAlive(new Point(j, i));
+            }
+        }
+        grid = nextGeneration;
+        drawGrid();
+    }
+
+    function isAlive(point) {
+        var neighbors = getNeighbors(point);
+        var liveNeighborsNumber = 0;
+        for(var i in neighbors) {
+            var p = neighbors[i];
+            if(grid[p.y][p.x]) {
+                liveNeighborsNumber++;
+            }
+        }
+        console.log(liveNeighborsNumber);
+        if(grid[p.y][p.x] == false && liveNeighborsNumber == 3) {
+            return true;
+        }
+        if(grid[p.y][p.x] == true) {
+            return liveNeighborsNumber == 2 || liveNeighborsNumber == 3;
+        }
+    }
 
     function generateGrid()
     {
@@ -39,6 +78,7 @@ function Game(canvas)
 
     function drawGrid()
     {
+        context.clearRect(0, 0, canvas.width, canvas.height);
         for(var i = 0; i < grid.length; i++) {
             for(var j = 0; j < grid[i].length; j++) {
                 if(grid[i][j]) {
@@ -63,10 +103,16 @@ function Game(canvas)
         for(var i in neighbors) {
             var p = neighbors[i];
             if(p.y >= gridSizeY) {
-                neighbors[i].y = p.y - gridSizeY;
+                neighbors[i].y = 0;
+            }
+            if(p.y < 0) {
+                neighbors[i].y = gridSizeY - 1;
             }
             if(p.x >= gridSizeX) {
-                neighbors[i].x = p.x - gridSizeX;
+                neighbors[i].x = 0;
+            }
+            if(p.x < 0 ) {
+                neighbors[i].x = gridSizeX - 1;
             }
         }
 
