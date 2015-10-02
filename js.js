@@ -13,9 +13,9 @@ function Point(x, y) {
 }
 
 function Game(canvas) {
-    var cellSize = 10;
-    var gridSizeX = 7;
-    var gridSizeY = 7;
+    var cellSize = 4;
+    var gridSizeX = 150;
+    var gridSizeY = 150;
     var grid = [];
 
     canvas.width = gridSizeX * cellSize;
@@ -55,7 +55,7 @@ function Game(canvas) {
             }
         }
 
-        if(grid[point.y][point.x]) {
+        if (grid[point.y][point.x]) {
             return !!(liveNeighborsNumber == 2 || liveNeighborsNumber == 3);
         } else {
             return liveNeighborsNumber == 3;
@@ -63,22 +63,22 @@ function Game(canvas) {
     }
 
     function generateGrid() {
-        /*        for(var i = 0; i < gridSizeY; i++) {
-         grid[i] = [];
-         for(var j = 0; j < gridSizeX; j++) {
-         grid[i][j] = Math.random() >= 0.5;
-         }
-         }*/
-        grid = [
-            [false, false, false, false, false, false, false],
-            [false, false, false, false, false, false, false],
-            [false, false, false, true, false, false, false],
-            [false, false, false, false, true, false, false],
-            [false, false, true, true, true, false, false],
-            [false, false, false, false, false, false, false],
-            [false, false, false, false, false, false, false],
-            [false, false, false, false, false, false, false]
-        ];
+        for (var i = 0; i < gridSizeY; i++) {
+            grid[i] = [];
+            for (var j = 0; j < gridSizeX; j++) {
+                grid[i][j] = Math.random() >= 0.5;
+            }
+        }
+        /*        grid = [
+         [false, false, false, false, false, false, false],
+         [false, false, false, false, false, false, false],
+         [false, false, false, true, false, false, false],
+         [false, false, false, false, true, false, false],
+         [false, false, true, true, true, false, false],
+         [false, false, false, false, false, false, false],
+         [false, false, false, false, false, false, false],
+         [false, false, false, false, false, false, false]
+         ];*/
     }
 
     function drawGrid() {
