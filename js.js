@@ -5,12 +5,17 @@ window.onload = function()
     game.start();
 };
 
+function Point(x, y) {
+    return {x:x, y:y};
+}
+
 function Game(canvas)
 {
     var cellSize = 10;
     var gridSizeX = 30;
     var gridSizeY = 30;
     var grid = [];
+
     canvas.width = gridSizeX * cellSize;
     canvas.height = gridSizeY * cellSize;
     var context = canvas.getContext('2d');
@@ -19,6 +24,7 @@ function Game(canvas)
     {
         generateGrid();
         drawGrid();
+        getNeighbors(new Point(30,30));
     };
 
     function generateGrid()
@@ -42,6 +48,29 @@ function Game(canvas)
         }
     }
 
+    function getNeighbors(point) {
+        var neighbors =  [
+            new Point(point.x - 1, point.y - 1),
+            new Point(point.x,     point.y - 1),
+            new Point(point.x + 1, point.y - 1),
+            new Point(point.x - 1, point.y),
+            new Point(point.x + 1, point.y),
+            new Point(point.x - 1, point.y + 1),
+            new Point(point.x,     point.y + 1),
+            new Point(point.x + 1, point.y + 1)
+        ];
 
+        for(var i in neighbors) {
+            var p = neighbors[i];
+            if(p.y >= gridSizeY) {
+                neighbors[i].y = p.y - gridSizeY;
+            }
+            if(p.x >= gridSizeX) {
+                neighbors[i].x = p.x - gridSizeX;
+            }
+        }
 
+        return neighbors;
+    }
 }
+
