@@ -13,9 +13,10 @@ function Point(x, y) {
 }
 
 function Game(canvas) {
-    var cellSize = 4;
-    var gridSizeX = 150;
-    var gridSizeY = 150;
+    var cellSize = 10;
+    var gridSizeX = 100;
+    var gridSizeY = 50;
+    var offset = 1;
     var grid = [];
 
     canvas.width = gridSizeX * cellSize;
@@ -86,7 +87,7 @@ function Game(canvas) {
         for (var i = 0; i < grid.length; i++) {
             for (var j = 0; j < grid[i].length; j++) {
                 if (grid[i][j]) {
-                    context.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                    context.fillRect(j * cellSize + offset * j, i * cellSize + offset * i, cellSize, cellSize);
                 }
             }
         }
